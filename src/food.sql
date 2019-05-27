@@ -26,3 +26,18 @@ SELECT * FROM dishes
 -- :doc insert new dishes
 INSERT INTO dishes (name, dishtype)  
 VALUES (:name, :dishtype)
+
+-- :name food-calendar-day-all :? :*
+-- :doc select all food-calendar-day with all the attributes
+SELECT fcd.date, fds.section, d.name FROM foodCalendarDay fcd, foodDaySection fds, dishes d
+ WHERE fcd.id = fds.foodCalendarDay AND fds.dish = d.id;
+
+-- :name new-food-calendar-day :<!
+-- :doc insert new food-calendar-day
+INSERT INTO foodCalendarDay (date)  
+VALUES (:date) returning id
+
+-- :name new-food-day-section :! :n
+-- :doc insert new food-day-section
+INSERT INTO foodDaySection (dish, foodCalendarDay, section)
+VALUES (:dish, :foodCalendarDay, :section)
