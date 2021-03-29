@@ -41,3 +41,8 @@ VALUES (:date) returning id
 -- :doc insert new food-day-section
 INSERT INTO foodDaySection (dish, foodCalendarDay, section)
 VALUES (:dish, :foodCalendarDay, :section)
+
+-- :name food-calendar-day-by-date :? :*
+-- :doc get food-calendar-day by date
+SELECT fcd.date, fds.section, d.name FROM foodCalendarDay fcd, foodDaySection fds, dishes d
+ WHERE fcd.id = fds.foodCalendarDay AND fds.dish = d.id AND fcd.date >= :date AND fcd.date <= :nextday 
