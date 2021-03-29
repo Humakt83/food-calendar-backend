@@ -1,9 +1,10 @@
  (defproject food-calendar-backend "0.1.0-SNAPSHOT"
-   :description "FIXME: write description"
-   :dependencies [[org.clojure/clojure "1.8.0"]
-                  [metosin/compojure-api "1.1.11"]
+   :description "Back end for food-calendar application"
+   :dependencies [[org.clojure/clojure "1.10.3"]
+                  [metosin/compojure-api "1.1.13"]
                   [org.postgresql/postgresql "9.4.1212"]
-                  [com.layerware/hugsql "0.4.9"]
+                  [com.layerware/hugsql "0.5.1"]
+                  [buddy/buddy-auth "2.1.0"]
                   [org.clojure/java.jdbc "0.7.9"]]
    :ring {:handler food-calendar-backend.handler/app}
    :uberjar-name "server.jar"
