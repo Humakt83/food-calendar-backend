@@ -8,7 +8,7 @@
             [buddy.auth.backends.session :refer [session-backend]]
             [clojure.java.jdbc :as jdbc])
   (:import java.util.Date)
-  (:import java.sql.Timestamp)
+  (:import java.time.ZoneId)
   (:import java.time.LocalDateTime))
 
 (s/defschema Dish
@@ -61,13 +61,23 @@
           (def dayStart (LocalDateTime/parse (.concat day "T00:00:00")))
           (def nextDay (.plusDays dayStart 1))
           (ok (sql/food-calendar-day-by-date db {:date dayStart, :nextday nextDay})))
-      
+        
+        (DELETE "/food-calendar-day/dish/:dish/:day" []
+          :path-params [day :- s/Str dish :- s/Str]
+          :summary "remove dish from date"
+          (jdbc/with-db-transaction [tx db]
+	          (def dayStart (LocalDateTime/parse (.concat day "T00:00:00")))         
+	          (def nextDay (.plusDays dayStart 1))
+	          (sql/remove-food-from-day tx {:dish dish, :date dayStart, :nextday nextDay})
+	          (ok)))
+          
         (POST "/food-calendar-day" []
           :return FoodCalendarDay
           :body [food-calendar-day FoodCalendarDay]
           :summary "posts a FoodCalendarDay"
           (jdbc/with-db-transaction [tx db]
-            (def day (first (sql/new-food-calendar-day tx {:date (new Timestamp (.getTime (get food-calendar-day :date)))})))
+            (def convertedDate (.withHour (.withMinute (.withSecond (.withNano (LocalDateTime/ofInstant (.toInstant (get food-calendar-day :date)) (ZoneId/systemDefault)) 0) 0) 0) 0))
+            (def day (first (sql/new-food-calendar-day tx {:date convertedDate})))
             (def dishes (flatten (map :dishes (get food-calendar-day :sections))))
             (defn fetchDish [dish]
               (sql/dishes-by-name tx {:name dish}))
