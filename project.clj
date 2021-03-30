@@ -2,6 +2,7 @@
    :description "Back end for food-calendar application"
    :dependencies [[org.clojure/clojure "1.10.3"]
                   [metosin/compojure-api "1.1.13"]
+                  [ring-cors "0.1.13"]
                   [org.postgresql/postgresql "9.4.1212"]
                   [com.layerware/hugsql "0.5.1"]
                   [buddy/buddy-auth "2.1.0"]
