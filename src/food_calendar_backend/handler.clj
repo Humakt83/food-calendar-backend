@@ -59,7 +59,7 @@
 	     :summary "returns food-calendar-day by day (format 2019-11-01)"
 	     (def dayStart (LocalDateTime/parse (.concat day "T00:00:00")))
 	     (def nextDay (.plusDays dayStart 1))
-	     (ok (sql/food-calendar-day-by-date db {:date dayStart, :nextday nextDay})))
+	     (ok (group-by :section (sql/food-calendar-day-by-date db {:date dayStart, :nextday nextDay}))))
 	  
 	   (DELETE "/food-calendar-day/section/:section/dish/:dish/:day" []
 	     :path-params [section :- s/Str day :- s/Str dish :- s/Str]
