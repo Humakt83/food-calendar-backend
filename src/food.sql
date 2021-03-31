@@ -48,11 +48,11 @@ SELECT fcd.date, fds.section, d.name FROM foodCalendarDay fcd, foodDaySection fd
  WHERE fcd.id = fds.foodCalendarDay AND fds.dish = d.id AND fcd.date >= :date AND fcd.date < :nextday 
  
 -- :name remove-food-from-day :! :n
--- :doc remove food from day by food and date
+-- :doc remove food from day by food, dishtype and date
 DELETE FROM foodDaySection fds
  	USING
  		foodCalendarDay fcd,
  		dishes d
- WHERE fcd.id = fds.foodCalendarDay AND fds.dish = d.id AND d.name = :dish AND fcd.date >= :date AND fcd.date < :nextday
+ WHERE fcd.id = fds.foodCalendarDay AND fds.dish = d.id AND fds.section = :section AND d.name = :dish AND fcd.date >= :date AND fcd.date < :nextday
  
  
